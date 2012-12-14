@@ -1,0 +1,9 @@
+#install makemkv and vlc, then
+
+cd ~
+
+mkdir -p ~/lib
+
+ln -s /Applications/MakeMKV.app/Contents/lib/libmmbd.dylib ~/lib/libaacs.dylib
+
+ln -s /Applications/MakeMKV.app/Contents/lib/libmmbd.dylib ~/lib/libbdplus.dylib

@@ -8,7 +8,7 @@ runProcess();
 
 function runProcess()
 {
-	$file_dir = "/torrents/.torrents";
+	$file_dir = "/mine/tmpTV";
 	$new_file_dir = "/mine/TVShows";
 	$logger = new Logger("/mine/logs/TVShows_".date("Y-m-d").".log");
 	$files = glob(quotemeta($file_dir)."/*");
@@ -26,14 +26,15 @@ function runProcess()
         foreach($shows as $file=>$show) {
             if($show->isValid()) {
                 $ext = pathinfo($file, PATHINFO_EXTENSION);
-                $file_path = $new_file_dir."/".$show->show_folder."/Season ".$show->season_number;
+                $file_path = $new_file_dir."/".$show->getShowFolder()."/Season ".$show->getSeasonNumber();
                 if(!is_dir($file_path)) {
-                    mkdir($file_path, 0777, true);
+                    //mkdir($file_path, 0777, true);
                 }
-                $file_name = $show->show." - ".$show->getEpisodeString().".".$ext;
+                $file_name = $show->getShowString()." - ".$show->getEpisodeString().".".$ext;
                 $new_file = $file_path."/".$file_name;
                 $cmd = 'mv "'.$file.'" "'.$new_file.'"';
                 $logger->addToLog($cmd);
+                var_dump($cmd);
                 //exec($cmd);
             } else {
                 $logger->addToLog($show->getInvalidReason());
