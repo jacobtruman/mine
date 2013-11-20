@@ -10,7 +10,7 @@ addLog("#### Ending process ####");
 
 function runProcess()
 {
-	$rss = "http://showrss.karmorra.info/rss.php?user_id=68354&hd=null&proper=null";
+	$rss = "http://showrss.info/rss.php?user_id=68354&hd=null&proper=null&magnets=false";
 
 	$contents = file_get_contents($rss);
 
