@@ -9,6 +9,7 @@ runProcess();
 function runProcess()
 {
 	$file_dir = "/torrents/.torrents";
+	$file_dir = "/torrents/downloading";
 	$new_file_dir = "/mine/Videos";
 	$logger = new Logger("/mine/logs/TVShows_".date("Y-m-d").".log");
 	$files = glob(quotemeta($file_dir)."/*");
@@ -31,6 +32,8 @@ function runProcess()
 			$new_file = $file_path."/".$file_name;
 			$cmd = 'mv "'.$file.'" "'.$new_file.'"';
 			$logger->addToLog($cmd);
+		} else {
+			$logger->addToLog($show->getInvalidReason());
 		}
 	}
 }
@@ -38,7 +41,7 @@ function runProcess()
 function processFile($file) {
 	if(!is_dir($file)) {
 		$ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
-		if(!in_array($ext, array("avi", "mp4"))) {
+		if(!in_array($ext, array("avi", "mp4", "!qb"))) {
 			return array(NULL, NULL);
 		} else {
 			$showstring = pathinfo($file, PATHINFO_FILENAME);
