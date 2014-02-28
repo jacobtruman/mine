@@ -4,13 +4,9 @@ ini_set('display_errors', 1);
 // Script to rename picture based on date taken value encoded into image
 
 $year = "2013";
-//reRunYear($year);
 
-//$path = "/chell/d/Pictures/camera/".$year."/NEW";
-$path = "/mine/backup/Pictures/camera/".$year."/NEW";
-//$files = glob($path."/*.jpg");
-$files = glob($path."/*.JPG");
-//var_dump($files);
+$path = "/mine/backup/Pictures/camera/".$year."/Nov";
+$files = glob($path."/*.jpg");
 foreach($files as $file)
 {
 	renameFile($file);
@@ -19,16 +15,23 @@ foreach($files as $file)
 function renameFile($file)
 {
 	$exif = read_exif_data ($file);
-	$datetime = (isset($exif['DateTimeDigitized']) ? $exif['DateTimeDigitized'] : (isset($exif['DateTimeOriginal']) ? $exif['DateTimeOriginal'] : $exif['DateTime']));
-	if(!empty($datetime))
-	{
-		$ts = strtotime($datetime);
-		if(!empty($ts))
+	if($exif['Model'] === "NIKON D3200") {
+		var_dump($file);
+		var_dump($exif['Make']);
+		var_dump($exif['Model']);
+		$datetime = (isset($exif['DateTimeDigitized']) ? $exif['DateTimeDigitized'] : (isset($exif['DateTimeOriginal']) ? $exif['DateTimeOriginal'] : $exif['DateTime']));
+		var_dump($datetime);
+		exit;
+		if(!empty($datetime))
 		{
-			$new_file = getFilename($ts);
-			echo "Renaming file ".$file." to ".$new_file."\n";
-			copy($file, $new_file);
-			#rename($file, $new_file);
+			$ts = strtotime($datetime);
+			if(!empty($ts))
+			{
+				$new_file = getFilename($ts);
+				echo "Renaming file ".$file." to ".$new_file."\n";
+				#copy($file, $new_file);
+				#rename($file, $new_file);
+			}
 		}
 	}
 }
