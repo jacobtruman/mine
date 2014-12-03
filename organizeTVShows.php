@@ -9,7 +9,7 @@ runProcess();
 function runProcess()
 {
 	$file_dir = "/torrents/.torrents";
-	$new_file_dir = "/mine/Videos";
+	$new_file_dir = "/mine/TVShows";
 	$logger = new Logger("/mine/logs/TVShows_".date("Y-m-d").".log");
 	$files = glob(quotemeta($file_dir)."/*");
 
@@ -23,7 +23,7 @@ function runProcess()
 	foreach($shows as $file=>$show) {
 		if($show->isValid()) {
 			$ext = pathinfo($file, PATHINFO_EXTENSION);
-			$file_path = $new_file_dir."/".$show->show."/Season ".$show->season;
+			$file_path = $new_file_dir."/".$show->show_folder."/Season ".$show->season;
 			if(!is_dir($file_path)) {
 				mkdir($file_path, 0777, true);
 			}

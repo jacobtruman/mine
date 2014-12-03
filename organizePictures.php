@@ -3,11 +3,7 @@
 ini_set('display_errors', 1);
 // Script to rename picture based on date taken value encoded into image
 
-$year = "2013";
-//reRunYear($year);
-
-//$path = "/chell/d/Pictures/camera/".$year."/NEW";
-$path = "/mine/backup/Pictures/camera/".$year."/NEW";
+$path = "/mine/backup/Pictures/camera/NEW";
 //$files = glob($path."/*.jpg");
 $files = glob($path."/*.JPG");
 //var_dump($files);

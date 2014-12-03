@@ -1,7 +1,7 @@
 <?php
 
 $ext = ".JPG";
-$dir = "/chell/d/Pictures/camera/2013/NEW/";
+$dir = "/mine/backup/Pictures/camera/2013/NEW/";
 $files = glob($dir."*".$ext);
 
 foreach($files as $file) {
