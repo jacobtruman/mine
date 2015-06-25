@@ -32,8 +32,8 @@ function processItems($items) {
 			$show = new TVShow($item['title']);
 			$url = $item['link'];
 
-			addLog($show->show.": ".$show->episode);
-			$filename = str_replace(" ", "_", $show->show." - ".$show->episode.".torrent");
+			addLog($show->show.": ".$show->getEpisodeString());
+			$filename = str_replace(" ", "_", $show->show." - ".$show->getEpisodeString().".torrent");
 
 			getTorrent($url, $filename);
 		}

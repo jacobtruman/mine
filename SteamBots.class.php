@@ -1,3 +1,4 @@
+#!/usr/bin/php
 <?php
 
 $x = new SteamBots();
@@ -10,13 +11,14 @@ class SteamBots {
 		"draketruman" => "trade_offers_dev.js",
 		"gabrielletruman" => "trade_offers_dev.js",
 		"logantruman" => "trade_offers_dev.js",
-		"jwilltruman" => "trade_offers.js",
+		"jwilltruman" => "trade_offers_dev.js",
 		"jacobwtruman" => "trade_offers_dev.js",
 		"williamtruman" => "trade_offers_dev.js",
 		"ivlostskitch" => "trade_offers_dev.js"
 	);
 
 	public function __construct() {
+		chdir("/nodejs_steambot/");
 		$this->startBots();
 		//$this->runTest();
 	}
@@ -25,7 +27,7 @@ class SteamBots {
 		$session_name = "steambots";
 		exec("screen -AdmS {$session_name} -t controller bash");
 		foreach($this->logins as $login => $script) {
-			$cmd = "screen -S {$session_name} -X screen -t {$login} nodejs /mine/backup/nodejs_steambot/{$script} {$login}";
+			$cmd = "screen -S {$session_name} -X screen -t {$login} node /nodejs_steambot/{$script} {$login}";
 			exec($cmd);
 		}
 	}
