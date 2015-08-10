@@ -14,7 +14,7 @@ $dry_run = true;
 runProcess($dry_run);
 
 function runProcess($dry_run = false) {
-	$base_path = "/mine/Pictures/camera";
+	$base_path = "/mine/Pictures/camera/2012";
 	$path = $base_path."/NEW";
 	$files = glob($path."/*.{jpg,JPG}", GLOB_BRACE);
 	foreach($files as $file) {
