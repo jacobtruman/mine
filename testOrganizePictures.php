@@ -9,17 +9,22 @@ require_once("Photo.class.php");
 // TODO: need to add 12 hours to all NIKON D3200 images, then delete the source files to ensure no duplication
 // TODO: Move NEW directory outside the year directory
 
-$dry_run = true;
+runProcess();
 
-runProcess($dry_run);
+function runProcess() {
+	$args = getopt("s:d:e");
 
-function runProcess($dry_run = false) {
-	$base_path = "/mine/Pictures/camera/2012";
+	$dry_run = true;
+	if(isset($args['e'])) {
+		$dry_run = false;
+	}
+
+	$base_path = "/mine/Pictures/camera";
 	$path = $base_path."/NEW";
 	$files = glob($path."/*.{jpg,JPG}", GLOB_BRACE);
 	foreach($files as $file) {
-		$photo = new Photo($path, $file, $base_path);
-		$photo->renameFile($dry_run);
+		$photo = new Photo($path, $file, $base_path, $dry_run);
+		$photo->renameFile();
 	}
 }
 
