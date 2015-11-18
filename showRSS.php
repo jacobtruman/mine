@@ -1,6 +1,9 @@
 #!/usr/bin/php
 <?
 
+// TODO: support magnet links
+// aria2c --bt-metadata-only=true --bt-save-metadata=true 'MAGNET LINK' -d=/torrents/.torrentstmp/ -o=FILENAME
+
 require_once("TVShow.class.php");
 require_once("Logger.class.php");
 

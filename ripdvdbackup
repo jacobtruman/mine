@@ -1,0 +1,18 @@
+#!/bin/bash
+if [ $1 ] ; then
+	DRIVE_NUM=$1
+	OUTPUT_DIR="/mine/RIP"
+	SOURCE_DRIVE="/dev/sr$DRIVE_NUM"
+	HANDBRAKE_PRESET="Normal"
+	EXTENSION="m4v"
+        # Grab the DVD title
+        DVD_TITLE=$(blkid -o value -s LABEL $SOURCE_DRIVE)
+        # Replace spaces with underscores
+        DVD_TITLE=${DVD_TITLE// /_}
+
+        # Backup the DVD to out hard drive
+        dvdbackup -i $SOURCE_DRIVE -o $OUTPUT_DIR -M -n $DVD_TITLE
+else
+	echo "You need to specify a drive number (0/1)"
+	echo "Ex:	ripdvdbackup 0"
+fi
