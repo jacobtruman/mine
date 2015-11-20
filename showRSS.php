@@ -1,8 +1,5 @@
 #!/usr/bin/php
-<?
-
-// TODO: support magnet links
-// aria2c --bt-metadata-only=true --bt-save-metadata=true 'MAGNET LINK' -d=/torrents/.torrentstmp/ -o=FILENAME
+<?php
 
 require_once("TVShow.class.php");
 require_once("Logger.class.php");
@@ -12,7 +9,7 @@ runProcess();
 addLog("#### Ending process ####");
 
 function runProcess() {
-	$rss = "http://showrss.info/rss.php?user_id=68354&hd=null&proper=null&magnets=false";
+	$rss = "http://showrss.info/rss.php?user_id=68354&hd=null&proper=null&magnets=true";
 
 	$contents = file_get_contents($rss);
 
@@ -44,33 +41,32 @@ function processItems($items) {
 }
 
 function getTorrent($url, $filename) {
+	preg_match('#magnet:\?xt=urn:btih:(?<hash>.*?)&dn=(?<filename>.*?)&tr=(?<trackers>.*?)$#', $url, $magnet_link);
+	$hash = strtolower($magnet_link['hash']);
 	$torrenttmp_dir = "/torrents/.torrentstmp";
 	$torrent_dir = "/torrents/.torrents";
 	chdir($torrenttmp_dir);
 
-	$full_filename = $torrenttmp_dir."/".$filename;
-	$full_filename_invalid = $torrent_dir."/".$filename.".invalid";
+	$full_filename = "{$torrenttmp_dir}/{$hash}.torrent";
+	$full_filename_invalid = "{$torrent_dir}/{$hash}.invalid";
+	$final_filename = "{$torrenttmp_dir}/{$filename}";
 	if(file_exists($full_filename_invalid)) {
 		echo "Invalid file found - deleting it: ".$full_filename_invalid."\n";
 		unlink($full_filename);
 		unlink($full_filename_invalid);
 	}
-	if(!file_exists($full_filename)) {
+	if(!file_exists($full_filename) && !file_exists($final_filename)) {
 		addLog("\tGetting file: ".$full_filename." from ".$url);
-		$fp = fopen($full_filename, 'w+');//This is the file where we save the information
-		$ch = curl_init($url);//Here is the file we are downloading
-		curl_setopt($ch, CURLOPT_ENCODING, "gzip"); // Important 
-		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-		curl_setopt($ch, CURLOPT_TIMEOUT, 50);
-		curl_setopt($ch, CURLOPT_FILE, $fp);
-		curl_setopt($ch, CURLOPT_HEADER,0); // None header
-		curl_setopt($ch, CURLOPT_BINARYTRANSFER,1); // Binary trasfer 1
-		curl_exec($ch);
-		curl_close($ch);
-		fclose($fp);
-		copy($full_filename, $torrent_dir."/".$filename);
+		$cmd = "aria2c --bt-metadata-only=true --bt-save-metadata=true '{$url}' -d {$torrenttmp_dir}";
+		exec($cmd, $output);
+		copy($full_filename, $final_filename);
 	} else {
-		addLog("\tfile exists: ".$full_filename);
+		if(file_exists($full_filename)) {
+			addLog("\ttmp file exists: {$full_filename}");
+		}
+		if(file_exists($final_filename)) {
+			addLog("\tfinal file exists: {$final_filename}");
+		}
 		//getTorrentInfo($full_filename);
 	}
 	chdir(dirname(__FILE__));
