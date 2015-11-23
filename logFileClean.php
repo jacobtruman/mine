@@ -3,8 +3,16 @@
 
 require_once("DirectoryCleaner.class.php");
 
-$c = new DirectoryCleaner("/scripts/logs");
+$log_dirs = array("/scripts/logs", "/mine/logs");
 
-$c->runProcess(".log");
+foreach($log_dirs as $dir) {
+	if(file_exists($dir)) {
+		echo "Working on directory: \"{$dir}\"".PHP_EOL;
+		$c = new DirectoryCleaner($dir);
+		$c->runProcess(".log");
+	} else {
+		echo "Directory does not exist: \"{$dir}\"".PHP_EOL;
+	}
+}
 
 ?>
