@@ -49,7 +49,7 @@ function getTorrent($url, $filename) {
 
 	$full_filename = "{$torrenttmp_dir}/{$hash}.torrent";
 	$full_filename_invalid = "{$torrent_dir}/{$hash}.invalid";
-	$final_filename = "{$torrenttmp_dir}/{$filename}";
+	$final_filename = "{$torrent_dir}/{$filename}";
 	if(file_exists($full_filename_invalid)) {
 		echo "Invalid file found - deleting it: ".$full_filename_invalid."\n";
 		unlink($full_filename);
