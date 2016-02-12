@@ -18,8 +18,8 @@ function runProcess() {
 	$extensions = array("jpg", "png");
 	//$filters = array("path"=>array("NEW"), "path_exclude"=>array("KatyPhone"));
 	//$filters = array("path_exclude"=>array("thumbnails"));
-	$filters = array("path"=>array("2013"), "path_exclude"=>array("thumbnails", "Takeout"));
-	//$filters = array();
+	//$filters = array("path"=>array("2013"), "path_exclude"=>array("thumbnails", "Takeout"));
+	$filters = array("path_exclude"=>array("thumbnails"));
 	$imgCompare = new ImgCompare($dir, $extensions, $filters, $verbose);
 	if(isset($args['b'])) {
 		$imgCompare->buildDB();
