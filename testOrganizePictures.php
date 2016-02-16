@@ -8,7 +8,7 @@ require_once("Photo.class.php");
 runProcess();
 
 function runProcess() {
-	$args = getopt("s:d:evt");
+	$args = getopt("s:d:evtr");
 
 	$dry_run = true;
 	if(isset($args['e'])) {
@@ -25,6 +25,11 @@ function runProcess() {
 		$trash = true;
 	}
 
+	$recurs = false;
+	if(isset($args['r'])) {
+		$recurs = true;
+	}
+
 	$source_path = "/tmp/PicturesNEW";
 	if(isset($args['s'])) {
 		$source_path = $args['s'];
@@ -33,6 +38,9 @@ function runProcess() {
 	if(isset($args['d'])) {
 		$dest_path = $args['d'];
 	}
+
+	// TODO: add recursive support
+
 	$files = glob($source_path."/*.{jpg,JPG}", GLOB_BRACE);
 	foreach($files as $file) {
 		$photo = new Photo($file, $dest_path, $dry_run, $verbose, $trash);
