@@ -25,18 +25,17 @@ function runProcess() {
 		$trash = true;
 	}
 
-	$source_path = "/mine/Pictures/camera/NEW";
+	$source_path = "/mine/Pictures/NEW";
 	if(isset($args['s'])) {
 		$source_path = $args['s'];
 	}
-	$dest_path = "/mine/Pictures/camera";
+	$dest_path = "/mine/Pictures";
 	if(isset($args['d'])) {
 		$dest_path = $args['d'];
 	}
 	$files = glob($source_path."/*.{jpg,JPG}", GLOB_BRACE);
 	foreach($files as $file) {
 		$photo = new Photo($file, $dest_path, $dry_run, $verbose, $trash);
-		$photo->setTable("images2");
 		$photo->renameFile();
 	}
 }

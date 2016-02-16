@@ -25,11 +25,11 @@ function runProcess() {
 		$trash = true;
 	}
 
-	$source_path = "/mine/Pictures/camera/NEW";
+	$source_path = "/tmp/PicturesNEW";
 	if(isset($args['s'])) {
 		$source_path = $args['s'];
 	}
-	$dest_path = "/mine/Pictures/camera";
+	$dest_path = "/tmp/Pictures";
 	if(isset($args['d'])) {
 		$dest_path = $args['d'];
 	}
