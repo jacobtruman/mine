@@ -44,10 +44,14 @@ function runProcess() {
 	$files = glob($source_path."/*.{jpg,JPG}", GLOB_BRACE);
 	$count = count($files);
 	foreach($files as $i=>$file) {
-		$photo = new Photo($file, $dest_path, $dry_run, $verbose, $trash);
-		$photo->addProgressToLog($count, ($i + 1));
-		$photo->setTable("images2");
-		$photo->renameFile();
+		try {
+			$photo = new Photo($file, $dest_path, $dry_run, $verbose, $trash);
+			$photo->addProgressToLog($count, ($i + 1));
+			$photo->setTable("images2");
+			$photo->renameFile();
+		} catch (Exception $e) {
+			echo $e->getMessage().PHP_EOL;
+		}
 	}
 }
 
