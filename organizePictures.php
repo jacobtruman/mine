@@ -34,8 +34,10 @@ function runProcess() {
 		$dest_path = $args['d'];
 	}
 	$files = glob($source_path."/*.{jpg,JPG}", GLOB_BRACE);
-	foreach($files as $file) {
+	$count = count($files);
+	foreach($files as $i=>$file) {
 		$photo = new Photo($file, $dest_path, $dry_run, $verbose, $trash);
+		$photo->addProgressToLog($count, ($i + 1));
 		$photo->renameFile();
 	}
 }
