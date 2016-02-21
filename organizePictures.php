@@ -8,7 +8,7 @@ require_once("Photo.class.php");
 runProcess();
 
 function runProcess() {
-	$args = getopt("s:d:evt");
+	$args = getopt("s:d:evtg");
 
 	$dry_run = true;
 	if(isset($args['e'])) {
@@ -25,6 +25,11 @@ function runProcess() {
 		$trash = true;
 	}
 
+	$getdatetime = false;
+	if(isset($args['g'])) {
+		$getdatetime = true;
+	}
+
 	$source_path = "/mine/Pictures/NEW";
 	if(isset($args['s'])) {
 		$source_path = $args['s'];
@@ -39,7 +44,11 @@ function runProcess() {
 		try {
 			$photo = new Photo($file, $dest_path, $dry_run, $verbose, $trash);
 			$photo->addProgressToLog($count, ($i + 1));
-			$photo->renameFile();
+			if($getdatetime) {
+				$date = $photo->getDateTimeFromFilename();
+			} else {
+				$photo->renameFile();
+			}
 		} catch (Exception $e) {
 			echo $e->getMessage().PHP_EOL;
 		}

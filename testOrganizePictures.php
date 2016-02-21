@@ -25,6 +25,11 @@ function runProcess() {
 		$trash = true;
 	}
 
+	$getdatetime = false;
+	if(isset($args['g'])) {
+		$getdatetime = true;
+	}
+
 	$recurs = false;
 	if(isset($args['r'])) {
 		$recurs = true;
@@ -48,7 +53,11 @@ function runProcess() {
 			$photo = new Photo($file, $dest_path, $dry_run, $verbose, $trash);
 			$photo->addProgressToLog($count, ($i + 1));
 			$photo->setTable("images2");
-			$photo->renameFile();
+			if($getdatetime) {
+				$date = $photo->getDateTimeFromFilename();
+			} else {
+				$photo->renameFile();
+			}
 		} catch (Exception $e) {
 			echo $e->getMessage().PHP_EOL;
 		}
