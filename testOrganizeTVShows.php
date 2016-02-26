@@ -34,6 +34,7 @@ function runProcess()
                 $new_file = $file_path."/".$file_name;
                 $cmd = 'mv "'.$file.'" "'.$new_file.'"';
                 $logger->addToLog($cmd);
+                var_dump($cmd);
                 //exec($cmd);
             } else {
                 $logger->addToLog($show->getInvalidReason());
