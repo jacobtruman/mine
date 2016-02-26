@@ -9,7 +9,8 @@ runProcess();
 addLog("#### Ending process ####");
 
 function runProcess() {
-	$rss = "http://showrss.info/rss.php?user_id=68354&hd=null&proper=null&magnets=true";
+	//$rss = "http://showrss.info/rss.php?user_id=68354&hd=null&proper=null&magnets=true";
+	$rss = "http://showrss.info/user/34251.rss?magnets=true&namespaces=true&name=clean&quality=null&re=null";
 
 	$contents = file_get_contents($rss);
 
