@@ -8,7 +8,7 @@ runProcess();
 
 function runProcess()
 {
-	$file_dir = "/torrents/.torrents";
+	$file_dir = "/torrents/data/done";
 	$new_file_dir = "/mine/TVShows";
 	$logger = new Logger("/mine/logs/TVShows_".date("Y-m-d").".log");
 	$files = glob(quotemeta($file_dir)."/*");
