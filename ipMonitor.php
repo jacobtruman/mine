@@ -1,7 +1,7 @@
 #!/usr/local/bin/php
 <?php
 
-$ip_file = "./.ip_address";
+$ip_file = dirname(__FILE__) . "/.ip_address";
 
 $cmd = "dig +short myip.opendns.com @resolver1.opendns.com";
 
@@ -16,7 +16,9 @@ exec($cmd, $output);
 if(!empty($output) && !empty($output[0])) {
 	$ip = trim($output[0]);
 	if($ip !== $current_ip) {
-		echo "IP Address changed from {$current_ip} to {$ip}" . PHP_EOL;
+		$msg = "IP Address changed from {$current_ip} to {$ip}";
+		echo $msg . PHP_EOL;
+		mail("jacob.truman@gmail.com", "IP Address Change", $msg);
 		file_put_contents($ip_file, $ip);
 	} else {
 		echo "IP Address is still {$ip}" . PHP_EOL;
