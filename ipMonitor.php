@@ -13,7 +13,7 @@ if(file_exists($ip_file)) {
 
 exec($cmd, $ip);
 
-if(!empty($ip) && $ip !== $current_ip) {
+if(!empty($ip) && !empty($ip[0]) && $ip[0] !== $current_ip) {
 	echo "IP Address changed from {$current_ip} to {$ip}" . PHP_EOL;
 	file_put_contents($ip_file, $ip);
 } else {
