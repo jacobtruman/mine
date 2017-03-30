@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 #echo "backing up videos from lightning to chell"
 #rsync -azv --delete --progress /mine/backup/Videos/ /chell/d/Videos/
 #echo "backing up everything from lightning to tidus"

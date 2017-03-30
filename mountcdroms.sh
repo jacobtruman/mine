@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 echo "Eject cdrom0"
 sudo eject /dev/sr0
 echo "Eject cdrom1"
