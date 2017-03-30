@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 HOST="wheatley"
 YEARS=()
 RE='^-?[0-9]+([.][0-9]+)?$'

@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 docker run \
 --name utorrent \
 -v /torrents/data:/data \

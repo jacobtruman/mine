@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 docker create \
 --name plex \
 --net=host \

@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 #$ mkvmerge -i $MKV_FILE_NAME
 mkvmerge -i The\ Game\ Plan\ \(2007\).mkv
 #$ mkvmerge -o ${MKV_FILE_NAME}_FIXED.mkv -y $AUDIO_TRACK_ID:$AUDIO_SHIFT $MKV_FILE_NAME
