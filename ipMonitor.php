@@ -14,7 +14,7 @@ if(file_exists($ip_file)) {
 exec($cmd, $ip);
 
 if($ip !== $current_ip) {
-	file_put_contents($ip, $ip_file);
+	file_put_contents($ip_file, $ip);
 }
 
 unset($ip);
