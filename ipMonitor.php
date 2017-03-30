@@ -11,13 +11,18 @@ if(file_exists($ip_file)) {
 	$current_ip = null;
 }
 
-exec($cmd, $ip);
+exec($cmd, $output);
 
-if(!empty($ip) && !empty($ip[0]) && $ip[0] !== $current_ip) {
-	echo "IP Address changed from {$current_ip} to {$ip}" . PHP_EOL;
-	file_put_contents($ip_file, $ip);
+if(!empty($output) && !empty($output[0])) {
+	$ip = $output[0];
+	if($ip !== $current_ip) {
+		echo "IP Address changed from {$current_ip} to {$ip}" . PHP_EOL;
+		file_put_contents($ip_file, $ip);
+	} else {
+		echo "IP Address is still {$ip}" . PHP_EOL;
+	}
 } else {
-	echo "IP Address is still {$ip}" . PHP_EOL;
+	echo "Something went wrong; {$cmd} returned: " . print_r($output, true) . PHP_EOL;
 }
 
-unset($ip);
+unset($output);
