@@ -1,7 +1,7 @@
 #!/usr/bin/php
 <?php
 
-$exts = array(".mov", ".mp4", ".m4v", ".3gp", ".mts", ".mpg");
+$exts = array(".mov", ".mp4", ".m4v", ".3gp", ".mts", ".mpg", ".avi");
 $files = glob("./*.".getPattern($exts));
 
 foreach($files as $file) {
@@ -25,7 +25,9 @@ foreach($files as $file) {
 	} else {
 		echo "File already exists: {$out_file}" . PHP_EOL;
 	}
-	rename($file, $file.".converted");
+	if(file_exists($out_file)) {
+		rename($file, $file.".converted");
+	}
 }
 
 function getPattern($exts) {

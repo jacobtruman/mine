@@ -18,9 +18,24 @@ if [ $1 ] && [ $2 ] ; then
 	else
 		echo "Still no date found; using current system time"
 	fi
-	CMD="HandBrakeCLI -i $1 -o $2 $HANDBRAKE_OPTIONS"
+	ROTATION=$(xmllint --xpath "string(//Rotation)" - <<< "$INFO")
+	#echo $ROTATION
+	if [ $ROTATION == "270°" ] ; then
+		#ROTATION_OPTION="--rotate=7"
+		ROTATION_OPTION="--rotate=angle=270"
+	elif [ $ROTATION == "90°" ] ; then
+		#ROTATION_OPTION="--rotate=4"
+		ROTATION_OPTION="--rotate=angle=90"
+	else
+		ROTATION_OPTION=""
+	fi
+	CMD="HandBrakeCLI -i $1 -o $2 $HANDBRAKE_OPTIONS $ROTATION_OPTION"
 	echo $CMD
-	$CMD
+	if [ $3 ] && [ $3 === "false" ] ; then
+		echo "DRY RUN MODE"
+	else
+		$CMD
+	fi
 	# re-enable date auto correct
 	sudo date -s "$ORIG_DATE"
 	sudo timedatectl set-ntp 1
