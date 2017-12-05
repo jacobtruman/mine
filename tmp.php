@@ -1,5 +1,4 @@
 <?php
-
 /*$yearmonth_pattern = '/[0-9]{4}\/(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)/i';
 $path = "/mine/testPics/2013/Nov/";
 

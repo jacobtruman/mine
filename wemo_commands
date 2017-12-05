@@ -1,0 +1,1 @@
+curl http://wheatley:5000/api/environment
