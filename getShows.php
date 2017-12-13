@@ -15,6 +15,11 @@ foreach ($shows_to_get as $show_to_get) {
     getShow($show_to_get);
 }
 
+$shows_file = "./shows.txt";
+if(file_exists($shows_file)) {
+    getShowsFromFile($shows_file);
+}
+
 function getShow($show_info) {
     $show_id = $show_info['show_id'];
     $base_url = "http://www.cbs.com";
@@ -37,9 +42,22 @@ function getShow($show_info) {
         $json = json_decode(file_get_contents($data_file), true);
 
         foreach ($json['result']['data'] as $record) {
-            $cmd = "youtube-dl --config-location ~/.config/youtube-dl/config-tvshow {$base_url}{$record['url']}";
-            echo $cmd . PHP_EOL;
-            system($cmd);
+            processUrl("{$base_url}{$record['url']}");
         }
     }
+}
+
+function getShowsFromFile($file) {
+    $urls = explode("\n", trim(file_get_contents($file)), true);
+    foreach($urls as $url) {
+        if(!empty($url)) {
+            processUrl($url);
+        }
+    }
+}
+
+function processUrl($url) {
+    $cmd = "youtube-dl --config-location ~/.config/youtube-dl/config-tvshow {$url}";
+    echo $cmd . PHP_EOL;
+    system($cmd);
 }
