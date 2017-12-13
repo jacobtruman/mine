@@ -1,21 +1,21 @@
 <?php
 $shows_to_get = array(
     #array("show"=>"Frasier", "show_id"=>61456196, "show_seasons"=>11),
-    array("show" => "Cheers", "show_id" => 61456194, "show_seasons" => 11),
+    #array("show" => "Cheers", "show_id" => 61456194, "show_seasons" => 11),
     array("show" => "MacGyver NEW", "show_id" => 61456289, "show_seasons" => 2),
     array("show" => "MacGyver", "show_id" => 22924, "show_seasons" => 7),
     array("show" => "Star Trek Voyager", "show_id" => 216818, "show_seasons" => 7),
     array("show" => "Star Trek NG", "show_id" => 216813, "show_seasons" => 7),
     array("show" => "Star Trek Enterprise", "show_id" => 42721, "show_seasons" => 4),
     array("show" => "Star Trek Discovery", "show_id" => 61456261, "show_seasons" => 1),
-    array("show" => "Star Trek OG", "show_id" => 22927, "show_seasons" => 3)
+    array("show" => "Star Trek OG", "show_id" => 22927, "show_seasons" => 3),
+    array("show" => "Perry Mason", "show_id" => 22926, "show_seasons" => 5)
 );
 foreach ($shows_to_get as $show_to_get) {
     getShow($show_to_get);
 }
 
-function getShow($show_info)
-{
+function getShow($show_info) {
     $show_id = $show_info['show_id'];
     $base_url = "http://www.cbs.com";
 
