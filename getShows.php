@@ -1,7 +1,7 @@
 <?php
 
 $cbs_shows_file = "./cbs_shows.json";
-//getCBSShows($cbs_shows_file);
+getCBSShows($cbs_shows_file);
 
 $nbc_shows_file = "./nbc_shows.json";
 getNBCShows($nbc_shows_file);
