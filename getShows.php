@@ -13,6 +13,9 @@ function getCBSShows($shows_file) {
 	if(file_exists($shows_file)) {
 		$shows_to_get = json_decode(file_get_contents($shows_file), true);
 		foreach ($shows_to_get as $show_info) {
+			if(!isset($show_info['active']) || !$show_info['active']) {
+				continue;
+			}
 			$show_id = $show_info['show_id'];
 			$base_url = "http://www.cbs.com";
 
@@ -39,6 +42,9 @@ function getNBCShows($shows_file) {
 	if(file_exists($shows_file)) {
 		$shows_to_get = json_decode(file_get_contents($shows_file), true);
 		foreach ($shows_to_get as $show_info) {
+			if(!isset($show_info['active']) || !$show_info['active']) {
+				continue;
+			}
 			$show_id = $show_info['show_id'];
 			$show_title = $show_info['show_title'];
 			$show_url = "https://api.nbc.com/v3.14/videos?fields%5Bvideos%5D=title%2Ctype%2Cavailable%2CseasonNumber%2CepisodeNumber%2Cexpiration%2Centitlement%2CtveAuthWindow%2CnbcAuthWindow%2Cpermalink%2CembedUrl&fields%5Bshows%5D=description%2Cname%2CshortDescription%2CshortTitle&fields%5Bimages%5D=derivatives%2Cpath%2Cwidth&fields%5Bseasons%5D=seasonNumber%2CcontestantTitle&fields%5BgenereticProperties%5D=showCollection.collections&include=show%2Cshow.season%2Cshow.iosProperties.compactImage%2Cshow.genereticProperties.showCollection.collections&derivatives=landscape.widescreen.size640.x1&filter%5Bshow%5D={$show_id}&filter%5Bavailable%5D%5Bvalue%5D=2017-12-14T12%3A30%3A00-05%3A00&filter%5Bavailable%5D%5Boperator%5D=%3C%3D&filter%5Btype%5D%5Bvalue%5D=Full%20Episode&filter%5Btype%5D%5Boperator%5D=%3D&sort=-airdate";
