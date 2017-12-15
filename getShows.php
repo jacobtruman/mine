@@ -10,23 +10,31 @@ $shows_file = "./shows.txt";
 getShowsFromFile($shows_file);
 
 function getCBSShows($shows_file) {
+	$limit = 100;
 	if(file_exists($shows_file)) {
 		$shows_to_get = json_decode(file_get_contents($shows_file), true);
 		foreach ($shows_to_get as $show_info) {
-			if(!isset($show_info['active']) || !$show_info['active']) {
-				continue;
-			}
-			$show_id = $show_info['show_id'];
-			$base_url = "http://www.cbs.com";
+			$offset = 0;
+			$total = null;
 
-			for ($i = 1; $i <= $show_info['show_seasons']; $i++) {
+			while($total == null || $offset <= $total) {
+				if (!isset($show_info['active']) || !$show_info['active']) {
+					echo "{$show_info['show_title']} is not active - skipping" . PHP_EOL;
+					break;
+				}
+				$show_id = $show_info['show_id'];
+				$base_url = "http://www.cbs.com";
 
-				$show_url = "{$base_url}/carousels/shows/{$show_id}/offset/0/limit/30/xs/0/{$i}/";
-				$data_file = "./{$show_id}-{$i}.json";
+				$show_url = "{$base_url}/carousels/shows/{$show_id}/offset/{$offset}/limit/{$limit}/";
+				$data_file = "./{$show_id}-{$offset}.json";
 
 				populateDataFile($show_url, $data_file);
 
 				$json = json_decode(file_get_contents($data_file), true);
+				if($total == null) {
+					$total = $json['result']['total'];
+				}
+				$offset += $total;
 
 				foreach ($json['result']['data'] as $record) {
 					processUrl("{$base_url}{$record['url']}");
