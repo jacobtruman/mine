@@ -9,8 +9,12 @@ getNBCShows($nbc_shows_file);
 $shows_file = "./shows.txt";
 getShowsFromFile($shows_file);
 
-function getCBSShows($shows_file) {
-	$limit = 100;
+function getCBSShows($shows_file, $latest = false) {
+	if($latest) {
+		$limit = 1;
+	} else {
+		$limit = 100;
+	}
 	if(file_exists($shows_file)) {
 		$shows_to_get = json_decode(file_get_contents($shows_file), true);
 		foreach ($shows_to_get as $show_info) {
@@ -26,7 +30,11 @@ function getCBSShows($shows_file) {
 				$base_url = "http://www.cbs.com";
 
 				$show_url = "{$base_url}/carousels/shows/{$show_id}/offset/{$offset}/limit/{$limit}/";
-				$data_file = "./{$show_id}-{$offset}.json";
+				if($latest) {
+					$data_file = "./{$show_id}-latest.json";
+				} else {
+					$data_file = "./{$show_id}-{$offset}.json";
+				}
 
 				populateDataFile($show_url, $data_file);
 
@@ -34,19 +42,34 @@ function getCBSShows($shows_file) {
 				if($total == null) {
 					$total = $json['result']['total'];
 				}
-				$offset += $total;
+				$offset += $limit;
 
 				foreach ($json['result']['data'] as $record) {
-					processUrl("{$base_url}{$record['url']}");
+					$file_path = null;
+					$episode_number = $record['episode_number'];
+					if(strstr($episode_number, ",")) {
+						$episode_numbers = explode(",", $episode_number);
+						$episodes = array();
+						foreach($episode_numbers as $episode_number) {
+							$episodes[] = "E" . str_pad(trim($episode_number), 2, "0", STR_PAD_LEFT);
+						}
+						$episode_string = implode("-", $episodes);
+						$file_path = "/mine/TVShows/%(series)s/Season %(season_number)s/%(series)s - S%(season_number)02d{$episode_string}";
+					}
+					processUrl("{$base_url}{$record['url']}", $file_path);
 				}
 
 				unlink($data_file);
+
+				if($latest) {
+					break;
+				}
 			}
 		}
 	}
 }
 
-function getNBCShows($shows_file) {
+function getNBCShows($shows_file, $latest = false) {
 	if(file_exists($shows_file)) {
 		$shows_to_get = json_decode(file_get_contents($shows_file), true);
 		foreach ($shows_to_get as $show_info) {
@@ -55,7 +78,35 @@ function getNBCShows($shows_file) {
 			}
 			$show_id = $show_info['show_id'];
 			$show_title = $show_info['show_title'];
-			$show_url = "https://api.nbc.com/v3.14/videos?fields%5Bvideos%5D=title%2Ctype%2Cavailable%2CseasonNumber%2CepisodeNumber%2Cexpiration%2Centitlement%2CtveAuthWindow%2CnbcAuthWindow%2Cpermalink%2CembedUrl&fields%5Bshows%5D=description%2Cname%2CshortDescription%2CshortTitle&fields%5Bimages%5D=derivatives%2Cpath%2Cwidth&fields%5Bseasons%5D=seasonNumber%2CcontestantTitle&fields%5BgenereticProperties%5D=showCollection.collections&include=show%2Cshow.season%2Cshow.iosProperties.compactImage%2Cshow.genereticProperties.showCollection.collections&derivatives=landscape.widescreen.size640.x1&filter%5Bshow%5D={$show_id}&filter%5Bavailable%5D%5Bvalue%5D=2017-12-14T12%3A30%3A00-05%3A00&filter%5Bavailable%5D%5Boperator%5D=%3C%3D&filter%5Btype%5D%5Bvalue%5D=Full%20Episode&filter%5Btype%5D%5Boperator%5D=%3D&sort=-airdate";
+
+			$base_url = "https://api.nbc.com/v3.14/videos";
+
+			$start_date = date("Y-m-d", strtotime("-1 month"));
+			$end_date = date("Y-m-d");
+
+			$params = array();
+			$params[] = "fields[videos]=title,type,available,seasonNumber,episodeNumber,expiration,entitlement,tveAuthWindow,nbcAuthWindow,permalink,embedUrl";
+			$params[] = "filter[show]={$show_id}";
+			if($latest) {
+				$params[] = "filter[available][value]={$start_date}";
+				$params[] = "filter[available][value]={$end_date}";
+				$params[] = "filter[available][operator]=BETWEEN";
+			} else {
+				$params[] = "filter[available][value]={$end_date}";
+				$params[] = "filter[available][operator]=<=";
+			}
+
+			$params[] = "filter[expiration][value]={$end_date}";
+			$params[] = "filter[expiration][operator]=>";
+			$params[] = "filter[entitlement][value]=free";
+			$params[] = "filter[entitlement][operator]==";
+			$params[] = "filter[type][value]=Full Episode";
+			$params[] = "filter[type][operator]==";
+			$params[] = "sort=-airdate";
+
+			$params_string = str_replace("%5D%3D", "%5D=", str_replace("%3D%3C", "=%3C", str_replace("%3D%3E", "=%3E", str_replace("%3D%3D", "=%3D", urlencode(implode("&", $params))))));
+
+			$show_url = $base_url . "?" . $params_string;
 
 			$data_file = "./" . str_replace(" ", "_", strtolower($show_title)) . ".json";
 
