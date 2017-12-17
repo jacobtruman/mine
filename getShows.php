@@ -69,7 +69,7 @@ function getCBSShows($shows_file, $latest = true) {
 	}
 }
 
-function getNBCShows($shows_file, $latest = false) {
+function getNBCShows($shows_file, $latest = true) {
 	if(file_exists($shows_file)) {
 		$shows_to_get = json_decode(file_get_contents($shows_file), true);
 		foreach ($shows_to_get as $show_info) {
@@ -122,20 +122,28 @@ function getNBCShows($shows_file, $latest = false) {
 					continue;
 				}
 
+				$get = false;
 				foreach($attributes['nbcAuthWindow'] as $window) {
 					if($window['type'] != "free") {
 						continue;
 					}
 					$end_ts = strtotime($window['end']);
 					if($now < $end_ts) {
-						$season_number = $attributes['seasonNumber'];
-						$episode_number = $attributes['episodeNumber'];
-						$season = str_pad($season_number, 2, "0", STR_PAD_LEFT);
-						$episode = str_pad($episode_number, 2, "0", STR_PAD_LEFT);
-						$episode_string = "S{$season}E{$episode}";
-						$file_path = "/mine/TVShows/{$show_info['show_title']}/Season {$season_number}/{$show_info['show_title']} - {$episode_string}";
+						$get = true;
+					}
+				}
 
-						processUrl($attributes['permalink'], $file_path);
+				if($get) {
+					$season_number = $attributes['seasonNumber'];
+					$episode_number = $attributes['episodeNumber'];
+					$season = str_pad($season_number, 2, "0", STR_PAD_LEFT);
+					$episode = str_pad($episode_number, 2, "0", STR_PAD_LEFT);
+					$episode_string = "S{$season}E{$episode}";
+					$file_path = "/mine/TVShows/{$show_info['show_title']}/Season {$season_number}/{$show_info['show_title']} - {$episode_string}";
+
+					processUrl($attributes['permalink'], $file_path);
+					if($latest) {
+						break;
 					}
 				}
 			}
