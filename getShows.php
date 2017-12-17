@@ -9,7 +9,7 @@ getNBCShows($nbc_shows_file);
 $shows_file = "./shows.txt";
 getShowsFromFile($shows_file);
 
-function getCBSShows($shows_file, $latest = false) {
+function getCBSShows($shows_file, $latest = true) {
 	if($latest) {
 		$limit = 1;
 	} else {
@@ -104,7 +104,7 @@ function getNBCShows($shows_file, $latest = false) {
 			$params[] = "filter[type][operator]==";
 			$params[] = "sort=-airdate";
 
-			$params_string = str_replace("%5D%3D", "%5D=", str_replace("%3D%3C", "=%3C", str_replace("%3D%3E", "=%3E", str_replace("%3D%3D", "=%3D", urlencode(implode("&", $params))))));
+			$params_string = str_replace("%5D%3D", "%5D=", str_replace("%3D%3C", "=%3C", str_replace("%3D%3E", "=%3E", str_replace("%3D%3D", "=%3D", implode("&", array_map("urlencode", $params))))));
 
 			$show_url = $base_url . "?" . $params_string;
 
