@@ -2,12 +2,16 @@
 
 require_once("TVShowFetch.class.php");
 
+$configs_dir = "./configs";
+$configs = array(
+	"cbs_shows.json" => "getCBSShows",
+	"nbc_shows.json" => "getNBCShows",
+	"cw_shows.json" => "getCWShows",
+	"shows.txt" => "getShowsFromFile"
+);
+
 $tvsf = new TVShowFetch();
 
-$tvsf->getCBSShows("./cbs_shows.json");
-
-$tvsf->getNBCShows("./nbc_shows.json");
-
-$tvsf->getCWShows("./cw_shows.json");
-
-$tvsf->getShowsFromFile("./shows.txt");
+foreach($configs as $file=>$method) {
+	$tvsf->processFile("{$configs_dir}/{$file}", $method);
+}
