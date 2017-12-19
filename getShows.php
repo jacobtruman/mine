@@ -4,11 +4,10 @@ require_once("TVShowFetch.class.php");
 
 $tvsf = new TVShowFetch();
 
-$cbs_shows_file = "./cbs_shows.json";
-$tvsf->getCBSShows($cbs_shows_file);
+$tvsf->getCBSShows("./cbs_shows.json");
 
-$nbc_shows_file = "./nbc_shows.json";
-$tvsf->getNBCShows($nbc_shows_file);
+$tvsf->getNBCShows("./nbc_shows.json");
 
-$shows_file = "./shows.txt";
-$tvsf->getShowsFromFile($shows_file);
+$tvsf->getCWShows("./cw_shows.json");
+
+$tvsf->getShowsFromFile("./shows.txt");
