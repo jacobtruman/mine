@@ -8,6 +8,7 @@ $configs = array(
 	"cw_shows.json" => "getCWShows",
 	"abc_shows.json" => "getABCShows",
 	"fox_shows.json" => "getFoxShows",
+	"cbc_shows.json" => "getCBCShows",
 	"shows.txt" => "getShowsFromFile"
 );
 
