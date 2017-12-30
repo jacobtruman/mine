@@ -2,22 +2,15 @@
 
 require_once("TVShowFetch.class.php");
 
-$configs = array(
-	"cbs_shows.json" => "getCBSShows",
-	"nbc_shows.json" => "getNBCShows",
-	"cw_shows.json" => "getCWShows",
-	"abc_shows.json" => "getABCShows",
-	"fox_shows.json" => "getFoxShows",
-	"cbc_shows.json" => "getCBCShows",
-	"shows.txt" => "getShowsFromFile"
-);
-
 $params = processArgs();
+
+$config_files = glob("{$params['configs_dir']}/*.json");
 
 $tvsf = new TVShowFetch($params);
 
-foreach($configs as $file=>$method) {
-	$tvsf->processFile("{$params['configs_dir']}/{$file}", $method);
+foreach($config_files as $config_file) {
+	$config = json_decode(file_get_contents($config_file), true);
+	$tvsf->processConfig($config);
 }
 
 function processArgs() {
@@ -43,8 +36,5 @@ function processArgs() {
 		$configs_dir = $args['c'];
 	}
 
-	// this is the api key for Fox - not sure when/if it expires...
-	$apiKey = "abdcbed02c124d393b39e818a4312055";
-
-	return array("execute" => $execute, "latest" => $latest, "verbose" => $verbose, "configs_dir" => $configs_dir, "apiKey" => $apiKey);
+	return array("execute" => $execute, "latest" => $latest, "verbose" => $verbose, "configs_dir" => $configs_dir);
 }
