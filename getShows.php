@@ -14,7 +14,7 @@ foreach($config_files as $config_file) {
 }
 
 function processArgs() {
-	$args = getopt("elvc:");
+	$args = getopt("elvc:f:");
 
 	$execute = false;
 	if(isset($args['e'])) {
@@ -36,5 +36,10 @@ function processArgs() {
 		$configs_dir = $args['c'];
 	}
 
-	return array("execute" => $execute, "latest" => $latest, "verbose" => $verbose, "configs_dir" => $configs_dir);
+	$filter = null;
+	if(isset($args['f'])) {
+		$filter = $args['f'];
+	}
+
+	return array("execute" => $execute, "latest" => $latest, "verbose" => $verbose, "configs_dir" => $configs_dir, "filter" => $filter);
 }
