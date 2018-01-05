@@ -14,7 +14,7 @@ foreach($config_files as $config_file) {
 }
 
 function processArgs() {
-	$args = getopt("elvc:f:n:");
+	$args = getopt("elvpc:f:n:");
 
 	$execute = false;
 	if(isset($args['e'])) {
@@ -29,6 +29,11 @@ function processArgs() {
 	$verbose = false;
 	if(isset($args['v'])) {
 		$verbose = true;
+	}
+
+	$purge = false;
+	if(isset($args['p'])) {
+		$purge = true;
 	}
 
 	$configs_dir = "./configs";
@@ -50,6 +55,7 @@ function processArgs() {
 		"execute" => $execute,
 		"latest" => $latest,
 		"verbose" => $verbose,
+		"purge" => $purge,
 		"configs_dir" => $configs_dir,
 		"filter" => $filter,
 		"networks" => $networks
