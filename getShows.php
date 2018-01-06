@@ -8,9 +8,20 @@ $config_files = glob("{$params['configs_dir']}/*.json");
 
 $tvsf = new TVShowFetch($params);
 
-foreach($config_files as $config_file) {
-	$config = json_decode(file_get_contents($config_file), true);
-	$tvsf->processConfig($config);
+$lock = "/tmp/" . basename(__FILE__) . ".lock";
+@$f = fopen($lock, 'x');
+if ($f === false) {
+	$tvsf->logger->addToLog("Can't acquire lock");
+} else {
+	$tvsf->logger->addToLog("Lock acquired");
+
+	foreach($config_files as $config_file) {
+		$config = json_decode(file_get_contents($config_file), true);
+		$tvsf->processConfig($config);
+	}
+	// Cleanup the lock
+	fclose($f);
+	unlink($lock);
 }
 
 function processArgs() {
