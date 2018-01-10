@@ -48,7 +48,7 @@ function processArgs() {
 		$keep_files = true;
 	}
 
-	$configs_dir = "./configs";
+	$configs_dir = dirname(__FILE__) . "/configs";
 	if(isset($args['c'])) {
 		$configs_dir = $args['c'];
 	}
