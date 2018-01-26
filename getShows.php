@@ -6,6 +6,11 @@ require_once("TVShowFetch.class.php");
 $params = processArgs();
 
 $config_files = glob("{$params['configs_dir']}/*.json");
+$config_file = "{$params['configs_dir']}/config.json";
+if(file_exists($config_file)) {
+	$config = json_decode(file_get_contents($config_file), true);
+	$params = array_merge($params, $config);
+}
 
 $tvsf = new TVShowFetch($params);
 
@@ -17,6 +22,9 @@ if ($f === false) {
 	$tvsf->logger->addToLog("Lock acquired");
 
 	foreach($config_files as $config_file) {
+		if($config_file == $config_file) {
+			continue;
+		}
 		$config = json_decode(file_get_contents($config_file), true);
 		$tvsf->processConfig($config);
 	}
