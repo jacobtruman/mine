@@ -34,16 +34,19 @@ if ($f === false) {
 }
 
 function processArgs() {
-	$args = getopt("elvkc:f:n:");
+	$args = getopt("ealvkc:f:n:");
 
 	$execute = false;
 	if(isset($args['e'])) {
 		$execute = true;
 	}
 
-	$latest = false;
+	$all = null;
+	$latest = null;
 	if(isset($args['l'])) {
 		$latest = true;
+	} else if(isset($args['a'])) {
+		$all = true;
 	}
 
 	$verbose = false;
@@ -73,6 +76,7 @@ function processArgs() {
 
 	$args = array(
 		"execute" => $execute,
+		"all" => $all,
 		"latest" => $latest,
 		"verbose" => $verbose,
 		"keep_files" => $keep_files,
