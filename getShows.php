@@ -33,6 +33,7 @@ class GetShows {
 				$config = json_decode(file_get_contents($config_file), true);
 				$tvsf->processConfig($config);
 			}
+			$tvsf->getSummary();
 			// Cleanup the lock
 			fclose($f);
 			unlink($lock);
