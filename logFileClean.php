@@ -3,7 +3,7 @@
 
 require_once("DirectoryCleaner.class.php");
 
-$log_dirs = array("/scripts/logs", "/mine/logs");
+$log_dirs = array("/raid/scripts/logs", "/raid/logs");
 
 foreach($log_dirs as $dir) {
 	if(file_exists($dir)) {
