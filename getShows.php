@@ -31,7 +31,11 @@ class GetShows {
 					continue;
 				}
 				$config = json_decode(file_get_contents($config_file), true);
-				$tvsf->processConfig($config);
+				if($config !== null) {
+					$tvsf->processConfig($config);
+				} else {
+					$tvsf->addToErrors("Config file '{$config_file}' is not valid JSON");
+				}
 			}
 			// Cleanup the lock
 			fclose($f);
